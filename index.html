@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>高级土耳其语课程 · 语法与习题精讲</title>
+<style>
+:root{
+  --bg:#f5f4ef;
+  --card:#ffffff;
+  --ink:#3a3f4a;
+  --muted:#8a8f98;
+  --primary:#5b7a8c;
+  --primary-soft:#e7eef2;
+  --accent:#b08968;
+  --accent-soft:#f3e9e0;
+  --line:#e3e1d9;
+  --opt:#6a7f99;
+  --ans-bg:#f2f5f4;
+  --ans-line:#cdd9d4;
+  --shadow:0 2px 8px rgba(60,70,80,.06);
+  --sbw:260px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:"Microsoft YaHei","PingFang SC","Segoe UI",system-ui,sans-serif;line-height:1.75}
+
+/* 侧边栏 */
+#sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--sbw);background:#33475a;color:#dce4ea;overflow-y:auto;z-index:60;box-shadow:2px 0 12px rgba(0,0,0,.15)}
+#sidebar .brand{padding:20px 18px 14px;border-bottom:1px solid rgba(255,255,255,.12)}
+#sidebar .brand .flag{font-size:22px;color:#e7c27d}
+#sidebar .brand h1{font-size:16px;color:#fff;margin-top:6px;line-height:1.4}
+#sidebar .brand .sub{font-size:11.5px;color:#9fb0be;margin-top:3px}
+#toc{padding:10px 0 30px}
+.toc-group{margin:4px 0}
+.toc-group>.tg{display:block;padding:9px 18px;font-size:13.5px;font-weight:700;color:#fff;cursor:pointer;transition:.15s}
+.toc-group>.tg:hover{background:rgba(255,255,255,.08)}
+.toc-group>.tg .arr{float:right;font-size:11px;opacity:.7;transition:.2s;transform:rotate(90deg)}
+.toc-group.collapsed>.tg .arr{transform:rotate(0deg)}
+.toc-group .children{overflow:hidden;max-height:2000px;transition:max-height .3s ease}
+.toc-group.collapsed .children{max-height:0}
+.toc-item{display:block;padding:7px 18px 7px 34px;font-size:13px;color:#c4d0da;cursor:pointer;text-decoration:none;border-left:3px solid transparent;transition:.15s}
+.toc-item:hover{background:rgba(255,255,255,.05);color:#fff}
+.toc-item.active{background:rgba(255,255,255,.14);color:#fff;border-left-color:#e7c27d}
+.toc-item .cnt{display:inline-block;min-width:18px;text-align:center;font-size:11px;background:rgba(255,255,255,.18);border-radius:9px;padding:0 5px;margin-right:6px;color:#dfe7ee}
+
+/* 顶部栏 */
+#topbar{position:fixed;top:0;left:var(--sbw);right:0;height:52px;background:var(--card);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:0 22px;z-index:40;box-shadow:var(--shadow)}
+#topbar .crumb{font-size:14px;color:var(--ink);font-weight:600}
+#topbar .crumb .sep{color:var(--muted);margin:0 8px;font-weight:400}
+#topbar .crumb .cur{color:var(--primary)}
+#topbar .hint{margin-left:auto;font-size:12px;color:var(--muted)}
+#menuBtn{display:none;background:none;border:1px solid var(--line);border-radius:8px;padding:4px 9px;cursor:pointer;font-size:16px;color:var(--primary)}
+
+/* 主内容区 */
+#content{margin-left:var(--sbw);padding-top:52px;min-height:100vh}
+#content .inner{max-width:880px;margin:0 auto;padding:24px 20px 80px}
+.chapter{display:none;margin-bottom:14px;background:var(--card);border-radius:16px;border:1px solid var(--line);overflow:hidden;box-shadow:var(--shadow)}
+.chapter.active{display:block;animation:fadein .25s ease}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.chapter-head{padding:20px 26px;border-bottom:1px solid var(--line);background:#fbfaf7}
+.chapter-head .badge{display:inline-block;background:var(--primary);color:#fff;font-size:12px;padding:3px 12px;border-radius:20px;margin-bottom:8px}
+.chapter-head h2{font-size:19px;color:var(--primary)}
+.chapter-head .intro{color:var(--ink);font-size:14px;margin-top:6px;line-height:1.7}
+.chapter-body{padding:20px 26px}
+
+/* 生词悬浮效果 */
+.w{border-bottom:1.5px dotted var(--accent);color:var(--accent);font-weight:700;cursor:help;position:relative}
+.w:hover::after{content:attr(data-zh);position:absolute;left:0;top:125%;z-index:30;background:#333;color:#fff;font-size:12px;font-weight:400;padding:4px 9px;border-radius:6px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,0.2);line-height:1.4}
+
+/* 文本与表格 */
+.koc-text{background:#fdfcf9;border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:12px;padding:18px 22px;font-size:15px;line-height:2;margin:12px 0}
+.koc-text h3{font-size:16px;color:var(--primary);margin-bottom:10px}
+.koc-text .par{margin-bottom:10px}
+
+.table-box{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px}
+.table-box th,.table-box td{border:1px solid var(--line);padding:10px 14px;text-align:left}
+.table-box th{background:var(--primary-soft);color:var(--primary);font-weight:700}
+.table-box tr:nth-child(even){background:#faf9f6}
+
+/* 习题样式 */
+.q{border-bottom:1px dashed var(--line);padding:16px 2px;cursor:pointer}
+.q:last-child{border-bottom:none}
+.q:hover .stem{background:var(--primary-soft);border-radius:8px}
+.stem{padding:8px 12px;transition:.15s;position:relative}
+.qno{display:inline-flex;width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent);align-items:center;justify-content:center;font-size:13px;font-weight:700;margin-right:10px;flex:none}
+.stem .tr{font-size:15px}
+.stem .blank{display:inline-block;min-width:60px;border-bottom:2px solid var(--accent);color:var(--accent);font-weight:700;text-align:center;padding:0 4px}
+
+.ans{display:none;margin:10px 0 4px 38px;background:var(--ans-bg);border:1px solid var(--ans-line);border-left:4px solid var(--primary);border-radius:10px;padding:12px 16px}
+.q.open .ans{display:block}
+.ans .lbl{font-size:12px;font-weight:700;color:var(--primary);margin-bottom:4px}
+.ans-body{font-size:14.5px;color:var(--ink)}
+.ans-body b{color:var(--primary)}
+
+/* 翻译隐藏/显示 */
+.zh-toggle{border:1px solid var(--line);background:var(--card);color:var(--accent);border-radius:6px;padding:3px 12px;font-size:12.5px;cursor:pointer;margin-top:6px;transition:.15s}
+.zh-toggle:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.zh-toggle.open{background:var(--primary);color:#fff;border-color:var(--primary)}
+.zh-body{display:none;margin-top:8px;padding:10px 14px;background:#fdf6ec;border-left:3px solid var(--accent);border-radius:6px;color:#5a4a3a;font-size:14px;line-height:1.7}
+.zh-body.show{display:block}
+
+.gram-box{background:#fdfcf9;border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:12px 0}
+.gram-box h4{color:var(--primary);margin-bottom:10px;font-size:15px}
+.gram-box ul{padding-left:20px}
+.gram-box li{font-size:14px;margin:6px 0}
+
+@media (max-width:820px){
+  :root{--sbw:0px}
+  #sidebar{transform:translateX(-100%);transition:.25s}
+  #sidebar.show{transform:none}
+  #topbar{left:0}
+  #content{margin-left:0}
+  #menuBtn{display:block}
+}
+</style>
+</head>
+<body>
+
+<!-- 侧边栏目录 -->
+<aside id="sidebar">
+  <div class="brand">
+    <div class="flag">🇹🇷</div>
+    <h1>高土语法与精读</h1>
+    <div class="sub">Türkan Şoray 访谈 & -DIK / -miş 精讲</div>
+  </div>
+  <nav id="toc"></nav>
+</aside>
+
+<!-- 顶部工具条 -->
+<div id="topbar">
+  <button id="menuBtn" onclick="document.getElementById('sidebar').classList.toggle('show')">☰</button>
+  <div class="crumb">高土课程 <span class="sep">/</span> <span class="cur" id="crumbCur">目录</span></div>
+  <div class="hint">悬浮生词显中文 · 点击题目看答案</div>
+</div>
+
+<!-- 内容区 -->
+<div id="content"><div class="inner" id="contentInner">
+
+<!-- ============ 第一部分：课文精读 ============ -->
+<section class="chapter" id="secText">
+  <div class="chapter-head">
+    <span class="badge">访谈精读</span>
+    <h2>Türkan Şoray 访谈精读（生词标注版）</h2>
+    <div class="intro">鼠标悬停在标注色彩的生词上可查看中文解释，点击“▶ 译文”查看全文翻译。</div>
+  </div>
+  <div class="chapter-body">
+    
+    <div class="koc-text">
+      <h3>第一段：谈论女儿的性格与母女关系</h3>
+      <div class="par"><b>Kızınız Yağmur şu an ne yapıyor?</b></div>
+      <div class="par">Kızım Yağmur denilince yüzümde gülücükler oluyor. Hayatta beni mutlu eden Allah’ın bana <span class="w" data-zh="礼物 / 恩赐">armağanı</span>. İyi ki, hayatımda bir kızım oldu. Hayatım farklı bir anlam kazandı. Belli bir yaşa gelince arkadaş, dost olduğunuz zaman başka bir mutluluk iyi ki Yağmur’u doğurmuşum diyorum. Yağmur mutlu olsun diye sağlığıma, yaşantıma dikkat ediyorum. Seyircim kadar Yağmur da benimle gurur duysun istiyorum. Yıllar önce aman <span class="w" data-zh="我的孩子不要被惯坏/娇纵">çocuğum şımarık olmasın</span> derdim Allah <span class="w" data-zh="合我心意 / 如我所愿">gönlüme göre</span> verdi. Son derece <span class="w" data-zh="谦逊的">mütevazı</span>, son derece <span class="w" data-zh="乐于分享的">paylaşımcı</span>, ben sevgi dolu bir insanım benden bin kat sevgi dolu, <span class="w" data-zh="仁慈的 / 有同情心的">merhametli</span> ve müthiş dürüst, <span class="w" data-zh="以其温暖的能量吸引着身边的人">sıcak enerjisi ile insanları çekiyor kendine</span>.</div>
+      <button class="zh-toggle">▶ 第一段 中文译文</button>
+      <div class="zh-body">
+        <b>您的女儿Yağmur现在在做什么？</b><br>
+        一说到我的女儿Yağmur，我的脸上就会洋溢着笑容。她是上天赐予我生命中最幸福的礼物。幸好我的生命中有了这样一个女儿，我的生活获得了不一样的意义。当她到了特定年龄，我们成为朋友、挚友时，又是另一种幸福，我常想“幸好我生下了Yağmur”。为了让Yağmur幸福，我很注重自己的健康和生活。我希望Yağmur能像我的观众一样为我感到自豪。许多年前我常说“希望我的孩子不要被惯坏”，上天如我所愿。她极其谦逊、非常乐于分享，我本身是个充满爱的人，而她比我更有爱心千倍、充满仁慈且无比正直，用她温暖的能量吸引着身边的每个人。
+      </div>
+    </div>
+
+    <div class="koc-text">
+      <h3>第二段：谈论对女儿未来的规划与演艺道路</h3>
+      <div class="par"><b>Kızım Yağmur’un oyuncu olmasını istiyor musunuz?</b></div>
+      <div class="par">Her şeyden önemlisi <span class="w" data-zh="完成学业">tahsilini tamamlaması</span> çok güzel diye düşünüyorum. Onun bir iki filmde oynamasını ve oyuncu olmasını istiyorum. Sinemacı gözüyle bakıyorum, yönetmen gözüyle. Yaşının en güzel zamanı, o yaşta bir genç kızın dünyasını ne kadar güzel <span class="w" data-zh="反射 / 展现">yansıtır</span> ve de inanılmaz yetenekli. Yani <span class="w" data-zh="遗传的">kalıtımsal</span> babası ve halası da oyuncu. Ayrıca geçen sene yurtdışında oyunculuk kurslarına da gitti. Bu sene onun için düşündüğümüz çok güzel iki projemiz var.</div>
+      <button class="zh-toggle">▶ 第二段 中文译文</button>
+      <div class="zh-body">
+        <b>您希望您的女儿Yağmur成为一名演员吗？</b><br>
+        我认为最重要的是她能完成学业，这非常好。我希望她能在这一两部电影中出演并成为一名演员。我是以电影人、导演的视角来看待的。这是她年龄最美好的时光，她能多么完美地展现那个年龄段年轻女孩的世界啊，而且她非常有天赋。这就是遗传吧，她的父亲和姑姑也是演员。此外，她去年还去国外参加了表演课程。今年我们有两个为她构想的非常棒的项目。
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ 第二部分：-DIK 语法讲解与练习 ============ -->
+<section class="chapter" id="secDikGrammar">
+  <div class="chapter-head">
+    <span class="badge">语法解析</span>
+    <h2>一、 -DIK 形容词性从句语法讲解</h2>
+    <div class="intro">学习将动作转化为修饰名词的形容词性结构（-DIK + iyelik eki）。</div>
+  </div>
+  <div class="chapter-body">
+    
+    <div class="gram-box">
+      <h4>1. 语法基本结构</h4>
+      <table class="table-box">
+        <tr><th>土耳其语</th><th>中文释义</th></tr>
+        <tr><td>yaptığım yemek</td><td>我做的饭</td></tr>
+        <tr><td>okuduğun kitap</td><td>你读的书</td></tr>
+        <tr><td>gördüğü film</td><td>他/她看过的电影</td></tr>
+        <tr><td>konuştuğumuz konu</td><td>我们讨论过的话题</td></tr>
+        <tr><td>aldıkları karar</td><td>他们做出的决定</td></tr>
+      </table>
+    </div>
+
+    <div class="gram-box">
+      <h4>2. 基本构成公式与人称变位</h4>
+      <p><b>公式：</b> 动词词干 + -DIK + 所属人称词尾（iyelik eki）</p>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:10px;">例如：yap（做）+ dık + ım → <b>yaptığım</b></p>
+
+      <table class="table-box">
+        <tr><th>人称</th><th>例子（yapmak）</th><th>中文</th></tr>
+        <tr><td>Ben</td><td>yaptığım</td><td>我做的</td></tr>
+        <tr><td>Sen</td><td>yaptığın</td><td>你做的</td></tr>
+        <tr><td>O</td><td>yaptığı</td><td>他/她做的</td></tr>
+        <tr><td>Biz</td><td>yaptığımız</td><td>我们做的</td></tr>
+        <tr><td>Siz</td><td>yaptığınız</td><td>你们做的</td></tr>
+        <tr><td>Onlar</td><td>yaptıkları</td><td>他们做的</td></tr>
+      </table>
+      <p style="margin-top:8px;color:var(--accent);font-size:13.5px;"><b>💡 重点强调：</b> -DIK 后面的人称词尾表示<b>动作的执行者</b>，而不是后面名词的所属者。如：<i>Öğretmenimizin yaptığı sınav çok zordu.</i>（我们老师出的考试非常难）</p>
+    </div>
+
+    <div class="gram-box">
+      <h4>3. -DIK 和 -yAcAK 的区别</h4>
+      <table class="table-box">
+        <tr><th>结构</th><th>主要含义</th><th>例子</th></tr>
+        <tr><td>-DIK + iyelik</td><td>已发生、正在发生或被视为事实的动作</td><td>yaptığımız iş（我们正在做/做过的工作）</td></tr>
+        <tr><td>-yAcAK + iyelik</td><td>将来要发生的动作</td><td>yapacağımız iş（我们将来要做的工作）</td></tr>
+      </table>
+    </div>
+
+    <div class="gram-box">
+      <h4>4. 教材原文例句精讲</h4>
+      <div class="sen" style="background:#fff;border:1px solid var(--line);padding:10px;margin:6px 0;border-radius:8px;">
+        1. Öğretmenimizin geçen hafta yaptığı sınav çok zordu.
+        <button class="zh-toggle" style="display:block">▶ 译文</button>
+        <div class="zh-body">我们老师上周出的考试非常难。</div>
+      </div>
+      <div class="sen" style="background:#fff;border:1px solid var(--line);padding:10px;margin:6px 0;border-radius:8px;">
+        2. Yarın ziyaret edeceğimiz müzede birçok tarihi eser var.
+        <button class="zh-toggle" style="display:block">▶ 译文</button>
+        <div class="zh-body">我们明天将要参观的博物馆里有很多历史文物。</div>
+      </div>
+      <div class="sen" style="background:#fff;border:1px solid var(--line);padding:10px;margin:6px 0;border-radius:8px;">
+        3. En son konuştuğumuz konuyu hatırlıyor musunuz?
+        <button class="zh-toggle" style="display:block">▶ 译文</button>
+        <div class="zh-body">你们还记得我们最后讨论的话题吗？</div>
+      </div>
+      <div class="sen" style="background:#fff;border:1px solid var(--line);padding:10px;margin:6px 0;border-radius:8px;">
+        4. Şu anda oturmakta olduğunuz evin adresini alabilir miyim?
+        <button class="zh-toggle" style="display:block">▶ 译文</button>
+        <div class="zh-body">可以告诉我你们目前居住的房子的地址吗？</div>
+      </div>
+      <div class="sen" style="background:#fff;border:1px solid var(--line);padding:10px;margin:6px 0;border-radius:8px;">
+        5. Bu hayatım boyunca almış olduğum en güzel hediye.
+        <button class="zh-toggle" style="display:block">▶ 译文</button>
+        <div class="zh-body">这是我一生中收到过的最好的礼物。</div>
+      </div>
+      <div class="sen" style="background:#fff;border:1px solid var(--line);padding:10px;margin:6px 0;border-radius:8px;">
+        6. Burası görmüş olabileceğiniz en güzel yer.
+        <button class="zh-toggle" style="display:block">▶ 译文</button>
+        <div class="zh-body">这里是你们可能见过的最美丽的地方。</div>
+      </div>
+      <div class="sen" style="background:#fff;border:1px solid var(--line);padding:10px;margin:6px 0;border-radius:8px;">
+        7. En son konuşacağımız konuyu hatırlıyor musunuz?
+        <button class="zh-toggle" style="display:block">▶ 译文</button>
+        <div class="zh-body">你们还记得我们最后将要讨论的话题吗？</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="chapter" id="secDikEx">
+  <div class="chapter-head">
+    <span class="badge">重点练习</span>
+    <h2>二、 Tamamlayalım · -DIK / -yAcAK 填空练习（20题）</h2>
+    <div class="intro">根据句意将括号中的动词填入正确的从句形式。点击题目展开查看答案与翻译。</div>
+  </div>
+  <div class="chapter-body">
+    
+    <div class="q">
+      <div class="stem"><span class="qno">1</span><span class="tr">Piknikte <span class="blank">yiyeceğimiz</span> yemekleri akşamdan hazırladık. (yemek)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>yiyeceğimiz</b></div><button class="zh-toggle">译文</button><div class="zh-body">我们提前一晚准备好了野餐时要吃的食物。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">2</span><span class="tr">Biraz sonra <span class="blank">______</span> film 1950 yılında çekilmiş. (izlemek)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>izleyeceğimiz</b></div><button class="zh-toggle">译文</button><div class="zh-body">我们一会儿要看的电影是1950年拍摄的。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">3</span><span class="tr">En <span class="blank">______</span> sanatçı Sezen Aksu'dur. (sevmek)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>sevdiğim</b></div><button class="zh-toggle">译文</button><div class="zh-body">我最喜欢的艺术家是 Sezen Aksu。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">4</span><span class="tr">Senin <span class="blank">______</span> şehir neresi? (doğmak)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>doğduğun</b></div><button class="zh-toggle">译文</button><div class="zh-body">你出生的城市是哪里？</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">5</span><span class="tr">Bizim <span class="blank">______</span> sınıf bu katta. (okumak)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>okuduğumuz</b></div><button class="zh-toggle">译文</button><div class="zh-body">我们上课的教室在这一层。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">6</span><span class="tr">Yıllar önce <span class="blank">______</span> elbiseleri hâlâ giyiyorum. (diktirmek)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>diktirdiğim</b></div><button class="zh-toggle">译文</button><div class="zh-body">我现在还穿着很多年前定做的衣服。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">7</span><span class="tr">Şu sıralar <span class="blank">______</span> kitabı çok beğendim. (okumak)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>okuduğum</b></div><button class="zh-toggle">译文</button><div class="zh-body">我很喜欢最近正在读的那本书。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">8</span><span class="tr">Türkiye'de insanların <span class="blank">______</span> resmî dil Türkçedir. (konuşmak)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>konuştuğu</b></div><button class="zh-toggle">译文</button><div class="zh-body">土耳其人所使用的官方语言是土耳其语。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">9</span><span class="tr">Senin bana <span class="blank">______</span> fıkrayı daha önce duymadım. (anlatmak)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>anlattığın</b></div><button class="zh-toggle">译文</button><div class="zh-body">你给我讲的那个笑话，我以前没有听过。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">10</span><span class="tr">Tarkan, konserinde <span class="blank">______</span> şarkılarla herkesi coşturdu. (söylemek)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>söylediği</b></div><button class="zh-toggle">译文</button><div class="zh-body">Tarkan 用他在演唱会上演唱的歌曲让所有人都兴奋起来了。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">11</span><span class="tr">Beş yıl önce bahçemize <span class="blank">______</span> ağaç bu yıl meyve vermeye başladı. (dikmek)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>diktiğimiz</b></div><button class="zh-toggle">译文</button><div class="zh-body">五年前我们在花园里种的树，今年开始结果了。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">12</span><span class="tr">Sınavda <span class="blank">______</span> soruları atlayın, cevabını <span class="blank">______</span> ilk önce yapın. (anlamak / bilmek)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>anladığınız / bildiğiniz</b></div><button class="zh-toggle">译文</button><div class="zh-body">考试时，先跳过你们理解的题目，先做那些你们知道答案的题目。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">13</span><span class="tr"><span class="blank">______</span> elbiseleri torbalara doldurup bir hayır kurumuna verdik. (giymemek)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>giymediğimiz</b></div><button class="zh-toggle">译文</button><div class="zh-body">我们把不穿的衣服装进袋子里，捐给了一个慈善机构。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">14</span><span class="tr"><span class="blank">______</span>, <span class="blank">______</span> senin olsun, <span class="blank">______</span> anlat. (yemek / içmek / görmek)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>yediğin / içtiğin / gördüklerini</b></div><button class="zh-toggle">译文</button><div class="zh-body">吃过的、喝过的归你自己，看到的事情讲给我听。（土耳其语常见地道俗语）</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">15</span><span class="tr">Yarın <span class="blank">______</span> film 5 dalda Oscar'a adaymış. (izlemek)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>izleyeceğimiz</b></div><button class="zh-toggle">译文</button><div class="zh-body">我们明天要看的电影据说获得了五个奥斯卡奖项的提名。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">16</span><span class="tr">Sana <span class="blank">______</span> aramızda kalsın, lütfen. (anlatmak)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>anlattığım</b></div><button class="zh-toggle">译文</button><div class="zh-body">我告诉你的事情，请保密，不要告诉别人。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">17</span><span class="tr">Kaza sırasında <span class="blank">______</span> bir kere daha anlatır mısınız? (görmek)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>gördüğünüzü</b></div><button class="zh-toggle">译文</button><div class="zh-body">可以请您再讲一遍您在事故发生时看到的事情吗？</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">18</span><span class="tr">Yazar savaş sırasında <span class="blank">______</span> bir kitapta toplamış. (yaşamak)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>yaşadıklarını</b></div><button class="zh-toggle">译文</button><div class="zh-body">这位作家把自己在战争期间经历的事情汇集在了一本书里。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">19</span><span class="tr">Düğünümüze bütün <span class="blank">______</span> çağırmamız mümkün değil. (tanımak)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>tanıdıklarımızı</b></div><button class="zh-toggle">译文</button><div class="zh-body">我们不可能把所有认识的人都邀请到婚礼上。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">20</span><span class="tr">Yarın <span class="blank">______</span> not defterime yazayım da unutmayayım. (yapmak)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>yapacaklarımı</b></div><button class="zh-toggle">译文</button><div class="zh-body">我把明天要做的事情写在笔记本上，这样就不会忘记了。</div></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ 第三部分：-miş 语法讲解与练习 ============ -->
+<section class="chapter" id="secMisGrammar">
+  <div class="chapter-head">
+    <span class="badge">语法解析</span>
+    <h2>三、 -miş 传闻/间接过去时语法精讲</h2>
+    <div class="intro">学习传闻过去时（-miş）的概念、与 -DI 的区别及其人称与否定变位。</div>
+  </div>
+  <div class="chapter-body">
+    
+    <div class="gram-box">
+      <h4>1. -miş 的基本用法</h4>
+      <p>-miş 是土耳其语中的一种过去时形式，通常称为<b>传闻过去时 / 听说过去时</b>。它主要表达说话人并非亲眼目睹某件事，而是通过别人转述、间接信息或事后发现得知某件事。</p>
+      <p style="margin-top:6px;"><b>中文常译为：</b> 听说……了、据说……、原来……了、……竟然……、……好像已经……</p>
+    </div>
+
+    <div class="gram-box">
+      <h4>2. -DI 与 -miş 的对比</h4>
+      <table class="table-box">
+        <tr><th>-DI（直接过去时）</th><th>-miş（传闻 / 间接过去时）</th></tr>
+        <tr><td>亲身经历或明确确认的事实</td><td>间接得知、推断或事后发现</td></tr>
+        <tr><td>Dün geldi.（他昨天来了。）</td><td>Dün gelmiş.（听说他昨天来了 / 原来他昨天来过。）</td></tr>
+      </table>
+    </div>
+
+    <div class="gram-box">
+      <h4>3. 基本结构与变位（以 gelmek 为例）</h4>
+      <p><b>公式：</b> 动词词干 + -mış/-miş/-muş/-müş + 人称词尾</p>
+      <table class="table-box" style="margin-top:8px">
+        <tr><th>人称</th><th>肯定式</th><th>否定式 (-ma/-me)</th><th>疑问式 (mi)</th></tr>
+        <tr><td>Ben</td><td>gelmişim</td><td>gelmemişim</td><td>gelmiş miyim?</td></tr>
+        <tr><td>Sen</td><td>gelmişsin</td><td>gelmemişsin</td><td>gelmiş misin?</td></tr>
+        <tr><td>O</td><td>gelmiş</td><td>gelmemiş</td><td>gelmiş mi?</td></tr>
+        <tr><td>Biz</td><td>gelmişiz</td><td>gelmemişiz</td><td>gelmiş miz?</td></tr>
+        <tr><td>Siz</td><td>gelmişsiniz</td><td>gelmemişsiniz</td><td>gelmiş misiniz?</td></tr>
+        <tr><td>Onlar</td><td>gelmişler</td><td>gelmemişler</td><td>gelmişler mi?</td></tr>
+      </table>
+    </div>
+
+    <div class="gram-box">
+      <h4>4. -miş 的复合时态总结</h4>
+      <table class="table-box">
+        <tr><th>时态</th><th>构成</th><th>例句</th><th>中文解释</th></tr>
+        <tr><td>-miş 过去时</td><td>动词 + -miş</td><td>gelmiş</td><td>来了 / 听说来了</td></tr>
+        <tr><td>现在进行传闻时</td><td>-iyor + -muş</td><td>geliyormuş</td><td>据说正在来 / 原来一直在来</td></tr>
+        <tr><td>将来传闻时</td><td>-ecek + -miş</td><td>gelecekmiş</td><td>据说将要来</td></tr>
+        <tr><td>过去完成时</td><td>-miş + -ti</td><td>gelmişti</td><td>原来已经来过了（已完成）</td></tr>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<section class="chapter" id="secMisEx1">
+  <div class="chapter-head">
+    <span class="badge">教材原题</span>
+    <h2>四、 教材重点填空题（20题）</h2>
+    <div class="intro">包含 Âşık Veysel 人物传记填空及日常对话传闻过去时练习。</div>
+  </div>
+  <div class="chapter-body">
+    
+    <div class="q">
+      <div class="stem"><span class="qno">1</span><span class="tr">Veysel yedi yaşındayken köyünde çiçek hastalığı <span class="blank">______</span>. (başlamak)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>başlamış</b></div><button class="zh-toggle">译文</button><div class="zh-body">Veysel 七岁时，他的村子里爆发了天花。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">2</span><span class="tr">Veysel'in iki gözü de çiçek hastalığı nedeniyle görmez <span class="blank">______</span>. (olmak)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>olmuş</b></div><button class="zh-toggle">译文</button><div class="zh-body">Veysel 的双眼都因为天花而失明了。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">3</span><span class="tr">Veysel'in gözleri sadece kırmızı rengi <span class="blank">______</span>. (seçebilmek)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>seçebilirmiş</b></div><button class="zh-toggle">译文</button><div class="zh-body">据说 Veysel 的眼睛只能分辨红色。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">4</span><span class="tr">Veysel'e saz çalmayı babası <span class="blank">______</span>. (öğretmek)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>öğretmiş</b></div><button class="zh-toggle">译文</button><div class="zh-body">是他的父亲教会了 Veysel 弹奏萨兹琴。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">5</span><span class="tr">Âşık Veysel iki kez <span class="blank">______</span>. (evlenmek)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>evlenmiş</b></div><button class="zh-toggle">译文</button><div class="zh-body">Âşık Veysel 结过两次婚。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">6</span><span class="tr">Âşık Veysel 1933 yılına kadar kendi şiirlerini <span class="blank">______</span>. (söylememek)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>söylemezmiş</b></div><button class="zh-toggle">译文</button><div class="zh-body">据说直到1933年，Âşık Veysel 都不演唱自己创作的诗歌。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">7</span><span class="tr">Âşık Veysel bir dönem köy köy dolaşarak saz dersleri <span class="blank">______</span>. (vermek)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>vermiş</b></div><button class="zh-toggle">译文</button><div class="zh-body">有一段时间，Âşık Veysel 走遍各个村庄教授萨兹琴。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">8</span><span class="tr">Âşık Veysel köy halkının yardımıyla köyün ilk meyve bahçesini <span class="blank">______</span>. (yetiştirmek)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>yetiştirmiş</b></div><button class="zh-toggle">译文</button><div class="zh-body">Âşık Veysel 在村民的帮助下培育了村里的第一个果园。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">9</span><span class="tr">Ali dün okula geç <span class="blank">______</span>. (gelmek)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>gelmiş</b></div><button class="zh-toggle">译文</button><div class="zh-body">听说 Ali 昨天上学迟到了。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">10</span><span class="tr">Annem bu filmi daha önce <span class="blank">______</span>. (izlemek)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>izlemiş</b></div><button class="zh-toggle">译文</button><div class="zh-body">我妈妈以前看过这部电影。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">11</span><span class="tr">Öğretmen bugün derse <span class="blank">______</span>. (gelmemek)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>gelmemiş</b></div><button class="zh-toggle">译文</button><div class="zh-body">听说老师今天没来上课。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">12</span><span class="tr">Sen bu kitabı hiç <span class="blank">______</span> mi? (okumak)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>okumuş</b></div><button class="zh-toggle">译文</button><div class="zh-body">你以前读过这本书吗？</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">13</span><span class="tr">Bizim komşular yeni bir araba <span class="blank">______</span>. (almak)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>almışlar</b></div><button class="zh-toggle">译文</button><div class="zh-body">听说我们的邻居买了一辆新车。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">14</span><span class="tr">Çocuklar bütün pastayı <span class="blank">______</span>. (yemek)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>yemişler</b></div><button class="zh-toggle">译文</button><div class="zh-body">原来孩子们把整个蛋糕都吃掉了。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">15</span><span class="tr">Ben bu haberi daha önce <span class="blank">______</span>. (duymamak)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>duymamışım</b></div><button class="zh-toggle">译文</button><div class="zh-body">原来我以前没有听说过这个消息。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">16</span><span class="tr">Siz İstanbul'a daha önce <span class="blank">______</span> misiniz? (gitmek)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>gitmiş</b></div><button class="zh-toggle">译文</button><div class="zh-body">你们以前去过伊斯坦布尔吗？</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">17</span><span class="tr">Babam gençliğinde çok güzel <span class="blank">______</span>. (şarkı söylemek)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>söylemiş</b></div><button class="zh-toggle">译文</button><div class="zh-body">听说我爸爸年轻时唱歌很好听。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">18</span><span class="tr">Ahmet sınavdan çok yüksek not <span class="blank">______</span>. (almak)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>almış</b></div><button class="zh-toggle">译文</button><div class="zh-body">听说 Ahmet 考试得了很高的分数。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">19</span><span class="tr">Dışarıda çok yağmur <span class="blank">______</span>. (yağmak)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>yağmış</b></div><button class="zh-toggle">译文</button><div class="zh-body">原来外面下了很大的雨。</div></div>
+    </div>
+
+    <div class="q">
+      <div class="stem"><span class="qno">20</span><span class="tr">Onlar bu haberi henüz <span class="blank">______</span>. (öğrenmemek)</span></div>
+      <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>öğrenmemişler</b></div><button class="zh-toggle">译文</button><div class="zh-body">听说他们还没有得知这个消息。</div></div>
+    </div>
+
+  </div>
+</section>
+
+<section class="chapter" id="secMisEx2">
+  <div class="chapter-head">
+    <span class="badge">复合时态练习</span>
+    <h2>五、 -miş 复合时态专项练习（20题）</h2>
+    <div class="intro">包含 -miş 过去时、-iyormuş、-ecekmiş 和 -mişti 四种复合时态的专项练习。</div>
+  </div>
+  <div class="chapter-body">
+    
+    <div style="margin-bottom:18px">
+      <h3 style="color:var(--primary);margin-bottom:8px;">1. -miş 过去时（5题）</h3>
+      <div class="q">
+        <div class="stem"><span class="qno">1</span><span class="tr">Ali dün akşam eve geç <span class="blank">______</span>. (gelmek)</span></div>
+        <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>gelmiş</b></div><button class="zh-toggle">译文</button><div class="zh-body">听说 Ali 昨天晚上很晚才回家。</div></div>
+      </div>
+      <div class="q">
+        <div class="stem"><span class="qno">2</span><span class="tr">Annem bu kitabı daha önce <span class="blank">______</span>. (okumak)</span></div>
+        <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>okumuş</b></div><button class="zh-toggle">译文</button><div class="zh-body">我妈妈以前读过这本书。</div></div>
+      </div>
+      <div class="q">
+        <div class="stem"><span class="qno">3</span><span class="tr">Öğretmen bugün okula <span class="blank">______</span>. (gelmemek)</span></div>
+        <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>gelmemiş</b></div><button class="zh-toggle">译文</button><div class="zh-body">听说老师今天没来学校。</div></div>
+      </div>
+      <div class="q">
+        <div class="stem"><span class="qno">4</span><span class="tr">Onlar geçen yıl Türkiye'ye <span class="blank">______</span>. (gitmek)</span></div>
+        <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>gitmişler</b></div><button class="zh-toggle">译文</button><div class="zh-body">听说他们去年去了土耳其。</div></div>
+      </div>
+      <div class="q">
+        <div class="stem"><span class="qno">5</span><span class="tr">Meğer bu yemeği hiç <span class="blank">______</span>. (tatmak)</span></div>
+        <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>tatmamışım</b></div><button class="zh-toggle">译文</button><div class="zh-body">原来我从来没有尝过这道菜。</div></div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:18px">
+      <h3 style="color:var(--primary);margin-bottom:8px;">2. 现在进行传闻时（-iyormuş）（5题）</h3>
+      <div class="q">
+        <div class="stem"><span class="qno">1</span><span class="tr">Duyduğuma göre Ayşe şu anda İstanbul'da <span class="blank">______</span>. (yaşamak)</span></div>
+        <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>yaşıyormuş</b></div><button class="zh-toggle">译文</button><div class="zh-body">据我所听说，Ayşe 现在住在伊斯坦布尔。</div></div>
+      </div>
+      <div class="q">
+        <div class="stem"><span class="qno">2</span><span class="tr">Babam eskiden bu fabrikada <span class="blank">______</span>. (çalışmak)</span></div>
+        <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>çalışıyormuş</b></div><button class="zh-toggle">译文</button><div class="zh-body">听说我爸爸以前在这家工厂工作。</div></div>
+      </div>
+      <div class="q">
+        <div class="stem"><span class="qno">3</span><span class="tr">Çocuklar bahçede <span class="blank">______</span>. (oynamak)</span></div>
+        <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>oynuyormuş</b></div><button class="zh-toggle">译文</button><div class="zh-body">听说孩子们正在院子里玩。</div></div>
+      </div>
+      <div class="q">
+        <div class="stem"><span class="qno">4</span><span class="tr">Müdür toplantıda yeni projeyi <span class="blank">______</span>. (anlatmak)</span></div>
+        <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>anlatıyormuş</b></div><button class="zh-toggle">译文</button><div class="zh-body">听说经理正在会议上介绍新项目。</div></div>
+      </div>
+      <div class="q">
+        <div class="stem"><span class="qno">5</span><span class="tr">Sen dün akşam saat onda hâlâ <span class="blank">______</span>. (ders çalışmak)</span></div>
+        <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>ders çalışıyormuşsun</b></div><button class="zh-toggle">译文</button><div class="zh-body">听说你昨天晚上十点还在学习。</div></div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:18px">
+      <h3 style="color:var(--primary);margin-bottom:8px;">3. 将来传闻时（-ecekmiş）（5题）</h3>
+      <div class="q">
+        <div class="stem"><span class="qno">1</span><span class="tr">Duyduğuma göre Ahmet yarın Ankara'ya <span class="blank">______</span>. (gitmek)</span></div>
+        <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>gidecekmiş</b></div><button class="zh-toggle">译文</button><div class="zh-body">据说 Ahmet 明天要去安卡拉。</div></div>
+      </div>
+      <div class="q">
+        <div class="stem"><span class="qno">2</span><span class="tr">Öğretmen gelecek hafta yeni bir konu <span class="blank">______</span>. (anlatmak)</span></div>
+        <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>anlatacakmış</b></div><button class="zh-toggle">译文</button><div class="zh-body">听说老师下周要讲一个新主题。</div></div>
+      </div>
+      <div class="q">
+        <div class="stem"><span class="qno">3</span><span class="tr">Onlar yaz tatilinde Antalya'da <span class="blank">______</span>. (kalmak)</span></div>
+        <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>kalacaklarmış</b></div><button class="zh-toggle">译文</button><div class="zh-body">听说他们暑假要住在安塔利亚。</div></div>
+      </div>
+      <div class="q">
+        <div class="stem"><span class="qno">4</span><span class="tr">Bu akşam hava çok soğuk <span class="blank">______</span>. (olmak)</span></div>
+        <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>olacakmış</b></div><button class="zh-toggle">译文</button><div class="zh-body">据说明天晚上天气会很冷。</div></div>
+      </div>
+      <div class="q">
+        <div class="stem"><span class="qno">5</span><span class="tr">Şirket gelecek yıl yeni bir şube <span class="blank">______</span>. (açmak)</span></div>
+        <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>açacakmış</b></div><button class="zh-toggle">译文</button><div class="zh-body">听说公司明年要开一家新分店。</div></div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:18px">
+      <h3 style="color:var(--primary);margin-bottom:8px;">4. 过去完成时（-mişti）（5题）</h3>
+      <div class="q">
+        <div class="stem"><span class="qno">1</span><span class="tr">Ben eve geldiğimde annem çoktan yemek <span class="blank">______</span>. (yapmak)</span></div>
+        <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>yapmıştı</b></div><button class="zh-toggle">译文</button><div class="zh-body">我到家的时候，妈妈早就做好饭了。</div></div>
+      </div>
+      <div class="q">
+        <div class="stem"><span class="qno">2</span><span class="tr">Biz sinemaya vardığımızda film <span class="blank">______</span>. (başlamak)</span></div>
+        <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>başlamıştı</b></div><button class="zh-toggle">译文</button><div class="zh-body">我们到电影院时，电影已经开始了。</div></div>
+      </div>
+      <div class="q">
+        <div class="stem"><span class="qno">3</span><span class="tr">Öğretmen sınıfa girdiğinde öğrenciler ödevlerini <span class="blank">______</span>. (bitirmek)</span></div>
+        <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>bitirmişti</b></div><button class="zh-toggle">译文</button><div class="zh-body">老师走进教室时，学生们已经完成了作业。</div></div>
+      </div>
+      <div class="q">
+        <div class="stem"><span class="qno">4</span><span class="tr">Ben onu aradığımda o çoktan <span class="blank">______</span>. (uyumak)</span></div>
+        <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>uyumuştu</b></div><button class="zh-toggle">译文</button><div class="zh-body">我给他打电话时，他早就睡着了。</div></div>
+      </div>
+      <div class="q">
+        <div class="stem"><span class="qno">5</span><span class="tr">Uçağımız havaalanına vardığımızda çoktan <span class="blank">______</span>. (kalkmak)</span></div>
+        <div class="ans"><div class="lbl">答案</div><div class="ans-body"><b>kalkmıştı</b></div><button class="zh-toggle">译文</button><div class="zh-body">我们到达机场时，飞机早已经起飞了。</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</div></div>
+
+<script>
+(function(){
+  "use strict";
+  var S = {}, Q = {};
+
+  /* ---- 1. 动态生成侧边栏 ---- */
+  document.querySelectorAll('section.chapter').forEach(function(sec){
+    var bg = sec.querySelector('.badge');
+    var group = bg ? bg.textContent.trim() : '其他';
+    Q[group] = Q[group] || [];
+    var h2 = sec.querySelector('h2');
+    var title = h2 ? h2.textContent.trim() : sec.id;
+    var count = sec.querySelectorAll('.q').length;
+    Q[group].push({id:sec.id, title:title, count:count});
+  });
+
+  var toc = document.getElementById('toc');
+  Object.keys(Q).forEach(function(g){
+    var grp = document.createElement('div');
+    grp.className = 'toc-group';
+    var tg = document.createElement('span');
+    tg.className = 'tg';
+    tg.innerHTML = g + '<span class="arr">▾</span>';
+    var kids = document.createElement('div');
+    kids.className = 'children';
+    
+    Q[g].forEach(function(it){
+      var a = document.createElement('a');
+      a.className = 'toc-item'; 
+      a.href = '#' + it.id; 
+      a.setAttribute('data-id', it.id);
+      var cntBadge = it.count > 0 ? '<span class="cnt">' + it.count + '</span>' : '';
+      a.innerHTML = cntBadge + it.title;
+      a.addEventListener('click', function(e){ 
+        e.preventDefault(); 
+        show(it.id); 
+      });
+      kids.appendChild(a);
+    });
+
+    grp.appendChild(tg); 
+    grp.appendChild(kids);
+    tg.addEventListener('click', function(){ grp.classList.toggle('collapsed'); });
+    toc.appendChild(grp);
+    S[g] = grp;
+  });
+
+  /* ---- 2. 切换章节 ---- */
+  function show(id){
+    document.querySelectorAll('section.chapter').forEach(function(sec){
+      sec.classList.toggle('active', sec.id === id);
+    });
+    document.querySelectorAll('.toc-item').forEach(function(a){
+      a.classList.toggle('active', a.getAttribute('data-id') === id);
+    });
+    var crumb = document.getElementById('crumbCur');
+    if(crumb){
+      var sec = document.getElementById(id);
+      if(sec){ 
+        var t = sec.querySelector('h2'); 
+        if(t) crumb.textContent = t.textContent.trim(); 
+      }
+    }
+    var el = document.getElementById(id);
+    if(el && el.scrollIntoView) el.scrollIntoView({block:'start'});
+    var sb = document.getElementById('sidebar');
+    if(sb && window.innerWidth <= 820) sb.classList.remove('show');
+  }
+
+  /* ---- 3. 题目折叠/展开答案 ---- */
+  document.querySelectorAll('.q').forEach(function(q){
+    q.addEventListener('click', function(){ q.classList.toggle('open'); });
+  });
+
+  /* ---- 4. 翻译按钮切换 ---- */
+  document.querySelectorAll('.zh-toggle').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var body = btn.nextElementSibling;
+      if(body && body.classList.contains('zh-body')){
+        body.classList.toggle('show');
+        btn.classList.toggle('open');
+      }
+    });
+  });
+
+  // 默认激活第一个章节
+  var first = document.querySelector('section.chapter');
+  if(first) show(first.id);
+})();
+</script>
+
+</body>
+</html>
